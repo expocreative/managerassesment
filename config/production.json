@@ -1,0 +1,5 @@
+{
+    "mongoURI1":"mongodb+srv://SuperAdmin:coder@123@cluster0.ythdp.mongodb.net/Data?retryWrites=true&w=majority",
+    "mongoURI2":"mongodb+srv://Creative:coder@123@cluster0.bfzec.mongodb.net/Data?retryWrites=true&w=majority",
+    "jwtSecret":"creative-expo"
+}
