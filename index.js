@@ -41,16 +41,20 @@ app.use('/api/backup', async(req, res) => {
         res.send(tzip);
     })
 });
-
-if(process.env.NODE_ENV == "production"){
-	app.use(express.static('client/build'));
-	app.get('*', (req, res)=>{
-		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-	})
-}
+const root = require('path').join(__dirname, 'client', 'build')
+app.use(express.static(root));
+app.get("/", (req, res) => {
+    res.sendFile('index.html', { root });
+})
+// if(process.env.NODE_ENV == "production"){
+// 	app.use(express.static('client/build'));
+// 	app.get('*', (req, res)=>{
+// 		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+// 	})
+// }
 
 //check the port if not found set it to '5000' then start the server//
-const port = process.env.PORT || 5000;
-app.listen(port, ()=>{
+const port = process.env.PORT || 8900;
+app.listen(port,'localhost', ()=>{
 	console.log(`the server is running on port ${port}`);
 });
