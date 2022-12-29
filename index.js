@@ -54,7 +54,7 @@ app.use(express.static(path.join(__dirname,'./client/build')));
 // }
 
 //check the port if not found set it to '5000' then start the server//
-const port = process.env.PORT || 5000;
+const port = 5000;
 app.listen(port, ()=>{
 	console.log(`the server is running on port ${port}`);
 });
