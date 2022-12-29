@@ -10,10 +10,10 @@
     "start": "node index",
     "server": "nodemon index",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "dev": "concurrently \"npm start\" \"npm run client\"",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
-  "author": "pushpendra singh",
+  "author": "Manish Rao",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
