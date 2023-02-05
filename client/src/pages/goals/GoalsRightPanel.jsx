@@ -23,7 +23,6 @@ const GoalsRightPanel = ({designerSelected, quarter, year, user, jsonData, previ
     //used when no data is filled for memeber -- initially//
     const [previousFeedback, setPreviousFeedback] = useState();
     const [pushedBack, setPushBackValue] = useState();
-
     const selectedDesignerData = designerSelected.data[year] && designerSelected.data[year][Number(quarter.split("Q")[1])-1];
     const isDesignerAssigned = selectedDesignerData ? selectedDesignerData.manager:'';
     const savedValue = selectedDesignerData.values;

@@ -46,6 +46,7 @@ export const CSSGoalsRow = makeStyles({
     },
     row:{
         marginTop:20,
-        fontSize:'14px'
+        fontSize:'14px',
+        
     }
 });

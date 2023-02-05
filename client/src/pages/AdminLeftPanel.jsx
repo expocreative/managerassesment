@@ -81,12 +81,13 @@ const AdminLeftPanel = ({amList, designersList, quarter, zoneList, quarterList,
                     <Button onClick={assignMemberInZone}
                         className={classes.btn} variant="outlined">Assign</Button>
                     
-                    <Button onClick={()=>DownloadSheet('rotation', getRotationData())} 
+                       <Button onClick={()=>DownloadSheet('rotation', getRotationData())} 
                         className={classes.btn} variant="outlined">Download</Button>
 
                         <Button onClick={()=>DownloadDatabase()} 
                             className={classes.btn} variant="outlined">Backup Database</Button>
                 </Grid>
+                
             </Grid>
 
             <Grid container direction='row' justify='space-between' spacing={2}>

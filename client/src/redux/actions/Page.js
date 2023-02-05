@@ -57,17 +57,65 @@ export const UpdateZoneList = (arr) => dispatch => {
 export const MemberAssigned = (member) => dispatch => {
     dispatch({type:MEMBER_ASSIGNED, payload:member});
 }
+export const DownloadSheetYear = (name,year)=> async dispatch=>{
+    console.log(" from page",name)
+    if(localStorage.token){
+        SetAuthToken(localStorage.token);
+    }
 
+    const config = {
+        headers:{
+            'Content-Type':'application/json'
+        },
+        responseType:'blob'
+    }
+    
+    const body = JSON.stringify({name,year});
+    // const sheetUrl = (name === "rotation")?"rotation":stype==="member"?"feedback/"+name : stype==="team"?"teamFeedback/"+name:"amFeedback/"+name;
+
+    try{
+        console.log(" from page",body)
+        let res = await axios.post('/api/sheet/yearfeedback', body, config);
+        console.log(res.data)
+        const url = window.URL.createObjectURL(new Blob([res.data]), {
+            type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `yaerend.xlsx`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        //dispatch({type:ROTATION_SHEET_CREATED});
+    }catch(err){
+        console.log('some error-1')
+        dispatch({type:SERVER_ERRORS});
+    }
+}
 export const DownloadSheet = (name, data, stype='') => async dispatch => {
-   // console.log(data)
-    data.map((item)=>{
-        //console.log(item)
-    //     item.data.values.forEach(element => {
-    //        console.log(element.rating)
-    //         element.rating=  ratingOptions[element.rating];//"Manish"
-    //    });
-
-    })
+   //console.log('::::',data)
+    // if(!Array.isArray(data)){
+    //      //"Manish for single designer
+    //     data.data.values.forEach(element => {
+    //         //console.log(element.rating)
+    //          element.rating=  ratingOptions[element.rating];
+             
+    //     });
+    // }
+    // else{
+    //     //"Manish" for multiple designers
+    //     data.map((item)=>{
+    //         //console.log(item)
+    //        return item.data.values.forEach(element => {
+    //            //console.log(element.rating)
+    //             element.rating=  ratingOptions[element.rating];
+                
+    //        });
+    
+    //    })
+    // }
+   
     if(localStorage.token){
         SetAuthToken(localStorage.token);
     }
@@ -81,8 +129,11 @@ export const DownloadSheet = (name, data, stype='') => async dispatch => {
     
     const body = JSON.stringify({data});
     const sheetUrl = (name === "rotation")?"rotation":stype==="member"?"feedback/"+name : stype==="team"?"teamFeedback/"+name:"amFeedback/"+name;
+    //const sheetUrl="feedback/ashishkumar"
+    //console.log(body)
 
     try{
+       // console.log(data)
         let res = await axios.post('/api/sheet/'+sheetUrl, body, config);
         const url = window.URL.createObjectURL(new Blob([res.data]), {
             type:'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -97,7 +148,7 @@ export const DownloadSheet = (name, data, stype='') => async dispatch => {
         //dispatch({type:ROTATION_SHEET_CREATED});
     }catch(err){
         console.log('some error-1')
-        dispatch({type:SERVER_ERRORS});
+        //dispatch({type:SERVER_ERRORS});
     }
 }
 

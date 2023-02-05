@@ -10,7 +10,7 @@ import List from "./List.jsx";
 import {ShowModel, MemberAssigned} from '../redux/actions/Page';
 import {CSSAdminRightPanel} from './styles/CSSAdminRightPanel';
 
-const AdminRightPanel = ({user, designersList, amList, ShowModel, MemberAssigned}) => {
+const AdminRightPanel = ({user, designersList, amList, ShowModel, MemberAssigned,testSrt}) => {
     const classes = CSSAdminRightPanel();
     const [arrTeam, setArrTeam] = useState([]);
     const [memberName, searchDesigner] = useState('');
@@ -94,6 +94,8 @@ AdminRightPanel.propTypes = {
     designersList:PropTypes.array,
     ShowModel:PropTypes.func,
     MemberAssigned:PropTypes.func
+    
 }
+
 
 export default connect(stateToProps, { ShowModel, MemberAssigned }) (AdminRightPanel);

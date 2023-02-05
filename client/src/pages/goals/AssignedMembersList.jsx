@@ -24,8 +24,7 @@ const getAssignedMembers = (arr, quarter, year, user) => {
 const AssignedMembersListItem = ({designerList, user, year, quarter, designerPublished, GetDesignerData}) => {
     const classes = CSSGoalsLeftPanel();
     const membersList = getAssignedMembers([...designerList], quarter, year, user);
-    const listClicked = (designer) => {
-        
+    const listClicked = (designer) => {        
         GetDesignerData(designer, year, quarter);
     }
 

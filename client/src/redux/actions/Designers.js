@@ -106,7 +106,7 @@ export const AssignDesignersInZone = (arr, year, quarter) => dispatch => {
             if(index<arr.length) { saveDesData(); return }
             dispatch(SaveAllDesignersData(arr, year, quarter));
         } catch(err) {
-            dispatch({type:SERVER_ERRORS, payload:res.data.msg});
+            //dispatch({type:SERVER_ERRORS, payload:res.data.msg});
         }
     }
     
@@ -135,11 +135,11 @@ const SaveAllDesignersData = (arr, year, quarter) => async dispatch =>{
         const key = obj.name.replace(/\s/g,'').toLowerCase()+'_'+year+'_'+quarter;
         const email = obj.email;
         const data = obj.data[year][Number(quarter.split('Q')[1])-1];
-        const body = JSON.stringify({key, email, data});
+        const body = JSON.stringify({key, email,year,quarter, data});
         index++;
 
         try{
-            await axios.get('/api/designer_data', {params:{key:key}});
+            await axios.get('/api/designer_data', {params:{email:email,year:year,quarter:quarter}});
             if(index<arr.length){ initilizeDesignerData(); return; };
             dispatch({type:SHOW_LOADER, payload:{show:false, msg:''}});
         }catch(err){
@@ -169,7 +169,7 @@ export const AddYearData = (year) => async dispatch => {
 }
 
 //designer data like extra feedback, pushback, prev feedback etc//
-export const SaveDesignerValue = (key, email, data) => async dispatch => {
+export const SaveDesignerValue = (key, email,data) => async dispatch => {
     dispatch({type:SHOW_LOADER, payload:{show:true, msg:'Saving Data...'}});
     const body = JSON.stringify({key, email, data});
 
@@ -199,12 +199,14 @@ export const SaveDesignerData = (key, email, data) => async dispatch => {
 //********save designers value and designers data******//
 export const SaveWholeDesignerData = (key, email, data) => async dispatch => {
     dispatch({type:SHOW_LOADER, payload:{show:true, msg:'Saving Data...'}});
+    //const body = JSON.stringify({key, email, data});
     const body = JSON.stringify({key, email, data});
-    console.log(body)
+    console.log(data)
     
     try{
-        await axios.post('/api/designer_data', body, getHeaderConfig);
         await axios.post('/api/designer/data', body, getHeaderConfig);
+        await axios.post('/api/designer_data', body, getHeaderConfig);
+        
         
         data.publish && dispatch({type:DESIGNER_DATA_PUBLISHED, payload:email});
         setTimeout(()=>{window.location.reload(); dispatch({type:SHOW_LOADER, payload:{show:false, msg:''}})}, 1500);
@@ -216,11 +218,12 @@ export const SaveWholeDesignerData = (key, email, data) => async dispatch => {
 
 export const GetDesignerData = (designer, year, quarter) => async dispatch => {
     try{
-        let res = await axios.get('/api/designer_data', {params:{key:designer.name.replace(/\s/g,'').toLowerCase()+'_'+year+'_'+quarter}});
-        console.log(res.data)
-        designer.data[year][Number(quarter.split('Q')[1])-1].values = res.data;
-        dispatch(DesignerSelected(designer));
-        dispatch(ChangeGoalsPercent(res.data));
+        // let res = await axios.get('/api/designer_data', {params:{key:designer.name.replace(/\s/g,'').toLowerCase()+'_'+year+'_'+quarter}});
+        let res = await axios.get(`/api/designer_data?email=${designer.email}&year=${year}&quarter=${quarter}`);
+        //console.log(res.data)
+         designer.data[year][Number(quarter.split('Q')[1])-1].values = res.data;
+         dispatch(DesignerSelected(designer));
+         dispatch(ChangeGoalsPercent(res.data));
     }catch(err){
         dispatch({type:SERVER_ERRORS});
     }
@@ -229,7 +232,8 @@ export const GetDesignerData = (designer, year, quarter) => async dispatch => {
 //***************used only in feedback section**********//
 export const GetDesignerFeedback = (designer, year, quarter) => async dispatch => {
     try{
-        let res = await axios.get('/api/designer_data', {params:{key:designer.name.replace(/\s/g,'').toLowerCase()+'_'+year+'_'+quarter}});
+       //let res = await axios.get('/api/designer_data', {params:{key:designer.name.replace(/\s/g,'').toLowerCase()+'_'+year+'_'+quarter}});
+        let res = await axios.get('/api/designer_data', {params:{email:designer.email,year:year,quarter:quarter}});
         //console.log(designer.name.replace(/\s/g,'').toLowerCase()+'_'+year+'_'+quarter);
         return res.data;
     }catch(err){

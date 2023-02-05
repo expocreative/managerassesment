@@ -17,6 +17,7 @@ router.get('/', auth, async(req, res)=>{
 });
 
 router.post('/', auth, async(req, res)=>{
+    console.log('inside / route')
     try{
         const {name, designation, email, year, quarter} = req.body;
         const activated = true;
@@ -71,9 +72,13 @@ router.post('/initilize_year', auth, async(req, res) => {
 router.post('/data', auth, async(req, res)=>{
     try{
         const {key, email, data} = req.body;
+        //const year= key.split('_')[1];
         let designer = await designerModel.findOne({ email });
         let finalData = {...designer.data };
-        finalData[Number(key.split('_')[1])][Number(key.split('_')[2].split('Q')[1])-1] = {...data, values:[]};
+        console.log("------/designer--",data);
+       // finalData[Number(key.split('_')[1])][Number(key.split('_')[2].split('Q')[1])-1] = {...data, values:[]};
+        finalData[Number(key.split('_')[1])][Number(key.split('_')[2].split('Q')[1])-1] = {...data};
+        //finalData['2023'][Number(quarter.split('Q')[1])-1] = {...data};
         await designer.updateOne({data:finalData});
         res.status(200).json({msg:'success'});
     }catch(err){

@@ -2,12 +2,77 @@ const express = require('express');
 const Excel = require('exceljs');
 const tempfile = require('tempfile');
 const auth = require('../middleware/auth');
+const designerModel = require('../models/designer');
+const designerDataModel = require('../models/designerData');
 const path = require('path');
 
 const router = express.Router();
-const { sheetStyle, fillValues } = require('./designersSheetStyle');
+const { sheetStyle, fillValues,fillValuesSlectedDesignerYr } = require('./designersSheetStyle');
+
+
+  
+router.post('/yearfeedback',auth, async(req, res)=>{
+    console.log('yearfeedback')
+        const {name,year}=req.body;
+        const namearr= name.split(','); //["Ashish Kumar, Manish Rao"]
+        let finalData=[];
+        console.log("mani",namearr)
+        let index=0;
+
+        
+        const intiValue = async() => {
+            let temail= namearr[index].toLowerCase().split(" ").join().replace(',','.')+'@vdx.tv';//split('@')[0].replace('.',' ');
+            let data =  await designerModel.findOne({ email:temail });
+            let tdata=  await data.data[year] ;
+            finalData[index]=tdata;        
+            index++;
+            if(index<namearr.length){  await intiValue(); }
+        }
+        await intiValue();
+        var workbook = new Excel.Workbook();
+        let mdta;
+       //console.log("::::::",finalData)
+
+
+       let j=0;
+       for (let i = 0; i < finalData.length; i++) {
+            var worksheet = workbook.addWorksheet(namearr[i]);
+            worksheet = sheetStyle(worksheet); 
+                      
+            let rowIndex = 2;
+            j=0;
+            tfillValues(i, rowIndex);
+        }
+
+        function tfillValues(i, rowIndex){
+            console.log(i);
+            let tobj = fillValuesSlectedDesignerYr(worksheet, {name:namearr[i], designation:"designation", data:finalData[i][j]}, rowIndex);
+            worksheet = tobj.worksheet;
+            rowIndex = tobj.totalCell+2;
+            j++;
+            if(j<finalData[i].length){
+                tfillValues(i, rowIndex);
+            }
+        }
+        
+       
+       let tempFilePath = tempfile('year_end.xlsx');
+        //console.log(workbook)
+        await workbook.xlsx.writeFile(tempFilePath);
+        res.sendFile(tempFilePath, function(err){
+        console.log('file downloaded successfully');
+     
+    })
+})
+
+// function fillVal(worksheet,namearr,ldata,rowIndex,i){
+//     let tobj = fillValues(worksheet, {name:namearr[i]+"-"+Math.random(), designation:"designation", data:ldata}, rowIndex);
+//     worksheet = tobj.worksheet;
+//     rowIndex = tobj.totalCell+2;
+// }
 
 router.post('/rotation', async (req, res)=>{
+    console.log('rotation')
     const { data } = req.body;
     try {
         var workbook = new Excel.Workbook();
@@ -33,7 +98,7 @@ router.post('/rotation', async (req, res)=>{
 
             let tindex = 3;
             obj.list.forEach(tobj=>{
-                let clrCol = tobj.designation.toLowerCase().search('manager')!=-1 ? 'ff0070c0' : 'ff00b0f0'
+                let clrCol = tobj.designation.toLowerCase().search('manager')!=-1 ? 'ff0070c0' : 'ff00b0f0';
                 let fontClr = tobj.designation.toLowerCase().search('developer')!=-1?'ffffffff':'ff000000';
                 if(obj.zone.search("EU") != -1){
                     clrCol = tobj.designation.toLowerCase().search('manager')!=-1 ? 'ff00b050' : 'ff92d050';
@@ -80,15 +145,19 @@ router.post('/rotation', async (req, res)=>{
 });
 
 router.post('/amFeedback/*', async(req, res)=>{
+    
     let data = req.body.data;
+    console.log(data)
     try{
         var workbook = new Excel.Workbook();
         var worksheet = workbook.addWorksheet(data[0].data.quarter);
         worksheet = sheetStyle(worksheet);
 
         let rowIndex = 2;
+
         data.forEach(obj=>{
             let tobj = fillValues(worksheet, {name:obj.name, designation:obj.designation, data:obj.data}, rowIndex);
+            //console.log(obj.data)
             worksheet = tobj.worksheet;
             rowIndex = tobj.totalCell+1;
         })
@@ -107,8 +176,9 @@ router.post('/amFeedback/*', async(req, res)=>{
 })
 
 router.post('/teamFeedback/*', async(req, res)=>{
+    //console.log(name,"teamFeedback")
     let allData = req.body.data;
-    //console.log(allData)
+    //console.log('manish',allData)
     try{
         var workbook = new Excel.Workbook();
         allData.forEach(obj => {
@@ -118,20 +188,23 @@ router.post('/teamFeedback/*', async(req, res)=>{
                 let rowIndex = 2;
                 //console.log(obj.arr)
                 obj.arr.forEach(dobj => {
-                   // console.log("dobj.data",dobj.data)
+                 // console.log("dobj.data",dobj.data)
                     if(dobj.data && dobj.data.publish){
                         let tobj = fillValues(worksheet, {name:dobj.name, designation:dobj.designation, data:dobj.data}, rowIndex);
                         worksheet = tobj.worksheet;
                         rowIndex = tobj.totalCell+1;
+                        console.log(tobj.totalCell)
                     }
                 });
+                
                 worksheet.mergeCells("'A2:A"+Number(rowIndex-1)+"'");
+                console.log("rowIndex",rowIndex)
             }
         });
-        
-        var tempFilePath = tempfile('tmp.xlsx');
-        console.log("worksheet",worksheet)
-        console.log("tempFilePath",tempFilePath)
+       // console.log()
+        var tempFilePath = tempfile('teamfile.xlsx');
+        // console.log("worksheet",worksheet)
+        // console.log("tempFilePath",tempFilePath)
         await workbook.xlsx.writeFile(tempFilePath);
         res.sendFile(tempFilePath, function(err){
             console.log('file downloaded successfully');
@@ -142,18 +215,23 @@ router.post('/teamFeedback/*', async(req, res)=>{
 })
 
 router.post('/feedback/*', async(req, res)=>{
-    const {name, designation, data} = req.body.data;
-    console.log(name,designation,data)
+     const {name, designation, data} = req.body.data;
+    
+    
+   // console.log(name,designation,data)
     try {
+        
         var workbook = new Excel.Workbook();
         var worksheet = workbook.addWorksheet(data.quarter);
+        
         worksheet = sheetStyle(worksheet);
         let tobj = fillValues(worksheet, {name:name, designation:designation, data:data}, 2);
+        
         worksheet = tobj.worksheet;
-        worksheet.mergeCells("'A2:A"+Number(tobj.totalCell-1)+"'");
-
+        //worksheet.mergeCells("'A2:A"+Number(tobj.totalCell-1)+"'");
+        console.log("tobj",worksheet)
         var tempFilePath = tempfile('tmp.xlsx');
-        console.log("tempFilePath",tempFilePath)
+        
         await workbook.xlsx.writeFile(tempFilePath);
 
         res.sendFile(tempFilePath, function(err){

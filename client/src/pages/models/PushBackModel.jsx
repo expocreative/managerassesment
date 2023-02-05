@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { Modal, Paper, IconButton, Button, Grid, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Modal, Paper, IconButton, Button, Grid, FormControl, InputLabel, Select, MenuItem,ListItemText,Input,makeStyles,useTheme } from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import { ShowModel } from '../../redux/actions/Page';
 import { CSSPushBackModel } from "../styles/CSSPushBackModel";
@@ -19,9 +19,39 @@ function getModalStyle() {
     };
 }
 
+const useStyles = makeStyles((theme) => ({
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+      maxWidth: 300,
+    },
+    
+    
+  }));
+
+  function getStyles(name, personName, theme) {
+    return {
+      fontWeight:
+        personName.indexOf(name) === -1
+          ? theme.typography.fontWeightRegular
+          : theme.typography.fontWeightMedium,
+    };
+  }
+
 const PushBackModel = ({user, model, arrReasons, ShowModel, SaveDesignerValue}) => {
+    const names = [
+        'reasion1',
+        'reasion2',
+        'reasion3',
+        'reasion4',
+        'reasion5',
+        'reasion6'
+      ];
+    //const classes1 = useStyles();
+    const [personName, setPersonName] = React.useState([]);
+  const theme = useTheme();
     const classes = CSSPushBackModel();
-    const [formData, setState] = useState({reason:'', comment:''});
+    const [formData, setState] = useState({reason:[], comment:''});
     const [enabled, setEnabled] = useState(false);
     const {reason, comment} = formData;
 
@@ -47,6 +77,11 @@ const PushBackModel = ({user, model, arrReasons, ShowModel, SaveDesignerValue}) 
         setEnabled(reason.length>=2 && comment.length>=2);
     }
 
+    // const handleChange = (event) => {
+        
+    //     setPersonName(event.target.value);
+    //   };
+
     return (
         <Modal open={model.show} onClose={()=>ShowModel({show:false, child:''})}
             aria-labelledby="simple-modal-title" aria-describedby="simple-modal-description">
@@ -60,15 +95,40 @@ const PushBackModel = ({user, model, arrReasons, ShowModel, SaveDesignerValue}) 
                 
                 <Grid container direction="column" className={classes.msgHolder}>
 
-                <FormControl className={classes.formControl}>
-                    <InputLabel id="demo-simple-select-label">Reason*</InputLabel>
+                <FormControl className={classes.formControl} style={{width: 450}}>
+                    <InputLabel id="demo-simple-select-label" size="200px">Reason*</InputLabel >
                     <Select labelId="demo-simple-select-label" id="demo-simple-select" name="reason"
-                        value={reason} onChange={onChange} >
+                        value={reason} onChange={onChange} multiple >
                             {
                                 arrReasons.map((rvalue,rindex)=><MenuItem key={rindex} value={rvalue}>{rvalue}</MenuItem>)
                             }
                     </Select>
                 </FormControl>
+        {/* <FormControl className={classes.formControl}>
+        <InputLabel id="demo-mutiple-name-label">Reason*</InputLabel>
+        <Select
+          labelId="demo-mutiple-name-label"
+          id="demo-mutiple-name"
+          multiple
+          value={reason}
+          onChange={onChange}
+          input={<Input />}
+          MenuProps={{
+            sx: {
+              "&& .Mui-selected": {
+                backgroundColor: "red"
+              }
+            }
+          }}
+          
+        >
+          {names.map((name) => (
+            <MenuItem key={name} value={name} style={getStyles(name, personName, theme)}>
+              {name}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl> */}
 
                     <label style={{paddingTop:20}}>Add Your Comment*</label>
                     <textarea name="comment" value={comment} placeholder="please add comment" 

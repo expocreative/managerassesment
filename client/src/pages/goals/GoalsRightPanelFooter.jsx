@@ -45,6 +45,7 @@ const GoalsRightPanelFooter = ({showSaveBtn, user, designerSelected, otherFeedba
         }
 
         data.prevFeedback = { arr:[], manager : '' };
+
         let key = designerSelected.name.replace(/\s/g,'').toLowerCase()+'_'+year+'_'+quarter;
         console.log(key,designerSelected.email,data)
         SaveWholeDesignerData(key, designerSelected.email, data);
@@ -74,7 +75,7 @@ const GoalsRightPanelFooter = ({showSaveBtn, user, designerSelected, otherFeedba
                         <Button onClick={()=>PreviewGoal(true)}>preview</Button>
                         {
                             showSaveBtn && ivalue>=jsonData.values.length-1 && <>
-                                <Button disabled={percent<98} onClick={()=>saveData(true)}>publish</Button> </>
+                            <Button disabled={percent<98} onClick={()=>saveData(true)}>publish</Button> </>
                         }
                     </div>
                 </Grid>

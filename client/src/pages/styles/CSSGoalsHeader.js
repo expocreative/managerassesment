@@ -4,7 +4,7 @@ export const CSSGoalsHeader = makeStyles({
     header:{
         display:'flex',
         justifyContent:'space-around',
-        width:500,
+        width:900,
         height:50,
         alignItems:'center',
         '& label':{
