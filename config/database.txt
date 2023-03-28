@@ -1,7 +1,0 @@
-mongodb+srv://SuperAdmin:coder@123@cluster0.ythdp.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
-mongodb://localhost:27017/
-
-for localtesting: //"mongodb://localhost:27017/Data?retryWrites=true&w=majority",
-
-
- for manish: "mongoURI1": "mongodb+srv://raomanish07:Manish2023@cluster0.1dkfcfh.mongodb.net/Data?retryWrites=true&w=majority"

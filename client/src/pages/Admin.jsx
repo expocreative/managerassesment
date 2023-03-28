@@ -101,7 +101,8 @@ const Admin = ({designersList, quarter, year, amList, memberAssigned, zoneList, 
             //console.log(arrZones)
             arrZones.sort();
             let tmpzone = arrZones.splice(1, 1);
-            arrZones.unshift(tmpzone[0]);
+           arrZones.unshift(tmpzone[0]);
+           console.info(arrZones.sort(),arrZones)
             UpdateZoneList(arrZones);
        }
     }, [quarter, year, designersList, amList, UpdateZoneList, allZones, prevQuarter, AddYearData, AddYearDataManagers, prevYear]);
@@ -271,6 +272,9 @@ Admin.propTypes = {
     UpdateZoneList:PropTypes.func,
     AddYearData:PropTypes.func,
     AddYearDataManagers:PropTypes.func
+    
+
+
 }
 
 export default connect(stateToProps, {AddYearData,AddYearDataManagers, MemberAssigned,updateManagersList,updateDesignersList,GetDesignerFeedback, ShowModel, AssignDesigner, UpdateZoneList})(Admin);

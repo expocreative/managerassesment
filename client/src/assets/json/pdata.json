@@ -106,65 +106,6 @@
       "feedback": ""
     },
     {
-      "id": "2",
-      "key": "POTENTIAL",
-      "performance": [
-        {
-          "Aptitude": "",
-          "options":[
-            "Displayed leadership aptitude.",
-            "Displayed creative aptitude.",
-            "Is very hardworking.",
-            "Has inclination towards innovation.",
-            "Possess problem solving aptitude.",
-            "Presents logical reasons during discussions.",
-            "Handled difficult conversation wisely and amiably.",
-            "Need more focus in few areas to gain skills."
-          ],
-          "feedback":"",
-          "managerfeedback":""
-        },
-        {
-          "Efficient Communication": "",
-          "options":[
-            "Conveyed message effectively across groups.",
-            "Good command over English language (written and verbal) and manage all situations effectively with stakeholders.",
-            "Not very comfortable in spoken English for next level.",
-            "Is fluent but makes errors while communication. Needs improvement.",
-            "Errors occur often during written communications.",
-            "Conveys campaign related communication timely in chat & verbal.",
-            "Missed timely communication on chat, mail & verbal.",
-            "Is amiable during communication.",
-            "Is rude during communication in some cases.",
-            "Is unprofessional during communication.",
-            "Need to improve tone and word selection.",
-            "Response to queries was crisp and to the point.",
-            "Response to queries was vague."
-          ],
-          "feedback":"",
-          "managerfeedback":""
-        },
-        {
-          "Initiative / Innovation ": "",
-          "options":[
-            "Took initiative in reaching out to AM for work most of the times.",
-            "Initiative taken to work extra hours during a demanding situation.",
-            "Takes initiative to handle complex campaigns.",
-            "Initiative towards QC'ng campaigns.",
-            "Did not take any initiative.",
-            "Did not took initiative even during a required situation.",
-            "Worked on innovative ideas or solution which is impactful.",
-            "Took initiative which positively impacted on team.", 
-            "Worked on feature innovation."
-          ],
-          "feedback":"",
-          "managerfeedback":""
-        }
-      ],
-      "rating": "NaN",
-      "feedback": ""
-    },
-    {
       "id": "3",
       "key": "VALUES",
       "performance": [

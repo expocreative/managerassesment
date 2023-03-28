@@ -310,7 +310,7 @@ const GoalsRow = (props) => {
                             ? msgStr
                             : data.feedback
                           : data.performance[index].feedback
-                      } clickManagerHandler={(testitem)=>amhangeValue(testitem,index)} isEnabled={manegercommentdisable} />
+                      } clickManagerHandler={(testitem)=>amhangeValue(testitem,index)} isEnabled={manegercommentdisable} title={"Leader's Comment"}/>
                     <textarea
                       disabled={!props.enabled }
                       name={'feedback_' + index}
@@ -336,7 +336,7 @@ const GoalsRow = (props) => {
 </div>
                     
                     
-                    {(obj.managerfeedback?.length >2 || props.user.type !="manager") && <div style={{marginTop:"10px",marginBottom:"10px"}}>Reviewer's Comment<ScrollDialog managefeedback={obj.managerfeedback} clickManagerHandler={(testitem)=>saveManagerChangeValue(testitem,index)} isEnabled={!manegercommentdisable} />
+                    {(obj.managerfeedback?.length >2 || props.user.type !="manager") && <div style={{marginTop:"10px",marginBottom:"10px"}}>Reviewer's Comment<ScrollDialog managefeedback={obj.managerfeedback} clickManagerHandler={(testitem)=>saveManagerChangeValue(testitem,index)} isEnabled={!manegercommentdisable} title={"Reviewer's Comment"} />
                     {console.log(props.user.type)}
                     <textarea                    
                       disabled={!manegercommentdisable}

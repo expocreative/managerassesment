@@ -51,6 +51,7 @@ export default function ScrollDialog(props) {
 
   return (
     <div >
+      {console.log("test",props.isEnabled)}
       <span style={{float:'right', right: '0px',marginBottom:'-7px'}}onClick={handleClickOpen('paper')} ><AspectRatioIcon /></span>
       <Dialog    
          fullWidth={fullWidth}
@@ -61,7 +62,8 @@ export default function ScrollDialog(props) {
         aria-labelledby="scroll-dialog-title"
         aria-describedby="scroll-dialog-description"
       >
-        <DialogTitle id="scroll-dialog-title">Manager Feedback</DialogTitle>
+        
+        <DialogTitle id="scroll-dialog-title">{props.title}</DialogTitle>
         <DialogContent dividers={scroll === 'paper'}>
           <DialogContentText
             id="scroll-dialog-description"
