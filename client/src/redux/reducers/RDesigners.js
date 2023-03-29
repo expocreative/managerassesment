@@ -12,7 +12,7 @@ const initialState = {
 	previewGoal:false,
 	otherFeedback:{reason:'', feedback:''},
 	arrDesignerAssigned:[],
-	designationList:['Designer - 1', 'Designer - 2', 'Sr. Designer - 1', 'Sr. Designer - 2', 'Sr. Developer - 1', 'Sr. Developer - 2']
+	designationList:['DesigCC1ner - 1', 'Designer - 2', 'Sr. Designer - 1', 'Sr. Designer - 2', 'Sr. Developer - 1', 'Sr. Developer - 2']
 }
 
 const RDesigners = (state=initialState, action) => {

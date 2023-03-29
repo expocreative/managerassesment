@@ -61,7 +61,9 @@ export const GetAstManagers = () => async dispatch => {
         let res = await axios.get('/api/user');
         let list = [];
         res.data.forEach((data)=>{
+            //console.log(data)
             if(data.type === "manager"){
+                
                 list.push(data);
             }
         });

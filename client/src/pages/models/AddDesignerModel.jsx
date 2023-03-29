@@ -21,7 +21,7 @@ function getModalStyle() {
 
 const AddDesignerModel = ({year, quarter, model, designationList,  ShowModel, AddDesigner}) => {
     const classes = CSSAddDesignerModel();
-    const [formData, setState] = useState({designation:'Designer - 1', name:''});
+    const [formData, setState] = useState({designation:'C - 1', name:''});
     const {designation, name} = formData;
     const [error, setError] = useState('');
 
